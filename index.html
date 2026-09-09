@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moire: Evolving Production</title>
+<meta name="description" content="Moire is an AI production studio for film and TV: visual development, VFX, and live production. New workflows, translated for production.">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+<link rel="shortcut icon" href="assets/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#F6F4F1">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Moire">
+<meta property="og:title" content="Moire: Evolving Production">
+<meta property="og:description" content="Moire is an AI production studio for film and TV: visual development, VFX, and live production.">
+<meta property="og:image" content="https://moiremedia.co/assets/og-image.png">
+<meta property="og:url" content="https://moiremedia.co">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Moire: Evolving Production">
+<meta name="twitter:description" content="Moire is an AI production studio for film and TV: visual development, VFX, and live production.">
+<meta name="twitter:image" content="https://moiremedia.co/assets/og-image.png">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=Archivo+Black&display=swap" rel="stylesheet">
+<style>
+html{scroll-behavior:smooth}
+body{margin:0;background:#F6F4F1;color:#050505;font-family:Archivo,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}a:hover{color:#050505}
+@media (pointer:fine){body,a,button{cursor:none}}
+*{box-sizing:border-box}
+@keyframes cue{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(6px);opacity:1}}
+</style>
+</helmet>
+
+<canvas ref="{{ glRef }}" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block"></canvas>
+<canvas ref="{{ spRef }}" style="position:fixed;inset:0;width:100%;height:100%;z-index:9998;pointer-events:none;display:block"></canvas>
+<div ref="{{ curRef }}" style="position:fixed;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:#fff;mix-blend-mode:difference;z-index:9999;pointer-events:none;opacity:0;transition:transform .4s cubic-bezier(.2,.8,.2,1),opacity .3s;will-change:transform"></div>
+
+<div style="position:relative;z-index:1;width:100%;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:clamp(40px,8vh,96px) clamp(20px,4vw,56px)">
+  <div ref="{{ r1 }}" style="opacity:0;transform:translateY(24px);display:flex;justify-content:center">
+    <img data-plat="1" src="assets/moire-logo.png" alt="Moire" style="width:clamp(150px,17vw,250px);height:auto;display:block">
+  </div>
+  <div style="display:inline-flex;flex-direction:column;align-items:stretch;margin-top:clamp(20px,3vh,36px)">
+    <div data-plat="1" ref="{{ r2 }}" style="font:400 clamp(72px,15vw,220px)/.9 'Archivo Black';letter-spacing:-.02em;opacity:0;transform:translateY(40px);color:#0E0D0C">MOIRE</div>
+    <div data-plat="1" ref="{{ r3 }}" style="display:flex;justify-content:space-between;font:500 clamp(11px,1.5vw,22px)/1 Archivo;letter-spacing:.1em;margin-top:clamp(12px,1.6vw,24px);padding:0 .05em;opacity:0;transform:translateY(16px)">
+      <span>E</span><span>V</span><span>O</span><span>L</span><span>V</span><span>I</span><span>N</span><span>G</span><span></span><span>P</span><span>R</span><span>O</span><span>D</span><span>U</span><span>C</span><span>T</span><span>I</span><span>O</span><span>N</span>
+    </div>
+  </div>
+  <p data-plat="1" ref="{{ r4 }}" style="font:400 clamp(15px,1.3vw,19px)/1.5 Archivo;color:#4A4946;max-width:420px;margin:clamp(24px,3.5vh,44px) 0 0;text-wrap:balance;opacity:0;transform:translateY(16px)">New workflows, translated for production.</p>
+  <a data-plat="1" ref="{{ r5 }}" href="mailto:hello@moiremedia.co" style="display:inline-flex;align-items:center;gap:14px;background:#0E0D0C;color:#fff;border:1.5px solid #0E0D0C;border-radius:999px;padding:16px 28px;font:500 12px/1 Archivo;letter-spacing:.16em;margin-top:clamp(24px,3.5vh,40px);opacity:0;transform:translateY(16px);transition:transform .6s cubic-bezier(.34,1.4,.4,1),background .5s" style-hover="transform:translateY(0) scale(1.07);background:#1A1A1A;color:#fff">HELLO@MOIREMEDIA.CO <span style="font-size:16px">→</span></a>
+</div>
+
+<div id="work" ref="{{ s1 }}" style="position:relative;z-index:1;padding:clamp(40px,8vh,96px) clamp(20px,4vw,56px) 40px;max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(32px,4vw,72px);opacity:0;transform:translateY(40px);transition:opacity 1s,transform 1s cubic-bezier(.2,.8,.2,1)">
+  <div data-plat="1" style="display:flex;flex-direction:column;gap:28px;border-top:1px solid #0E0D0C;padding-top:28px">
+    <svg width="40" height="40" viewBox="0 0 44 44" fill="none" stroke="#0E0D0C" stroke-width="2"><circle cx="16" cy="22" r="13"></circle><circle cx="28" cy="22" r="13"></circle></svg>
+    <div style="font:400 15px/1 'Archivo Black';letter-spacing:.2em">AI PRODUCTION</div>
+    <div style="display:flex;flex-direction:column;gap:12px;font:400 18px/1.3 Archivo;color:#3A3937"><span>Visual Development</span><span>AI Animation</span><span>Historical Recreation</span><span>Grey Box Capture</span></div>
+  </div>
+  <div data-plat="1" style="display:flex;flex-direction:column;gap:28px;border-top:1px solid #0E0D0C;padding-top:28px">
+    <svg width="40" height="40" viewBox="0 0 44 44" fill="none" stroke="#0E0D0C" stroke-width="2"><circle cx="16" cy="22" r="13"></circle><circle cx="28" cy="22" r="13"></circle></svg>
+    <div style="font:400 15px/1 'Archivo Black';letter-spacing:.2em">VISUAL EFFECTS</div>
+    <div style="display:flex;flex-direction:column;gap:12px;font:400 18px/1.3 Archivo;color:#3A3937"><span>Background Replacement</span><span>Set Extension</span><span>Compositing</span><span>Face Replacement</span></div>
+  </div>
+  <div data-plat="1" style="display:flex;flex-direction:column;gap:28px;border-top:1px solid #0E0D0C;padding-top:28px">
+    <svg width="40" height="40" viewBox="0 0 44 44" fill="none" stroke="#0E0D0C" stroke-width="2"><circle cx="16" cy="22" r="13"></circle><circle cx="28" cy="22" r="13"></circle></svg>
+    <div style="font:400 15px/1 'Archivo Black';letter-spacing:.2em">LIVE PRODUCTION</div>
+    <div style="display:flex;flex-direction:column;gap:12px;font:400 18px/1.3 Archivo;color:#3A3937"><span>Full Production at Scale</span><span>Virtual Production</span><span>Live to Tape Production</span></div>
+  </div>
+</div>
+
+<div ref="{{ s2 }}" style="position:relative;z-index:1;padding:clamp(40px,6vh,72px) clamp(20px,4vw,56px) clamp(32px,5vh,56px);display:flex;flex-direction:column;align-items:center;gap:44px;opacity:0;transform:translateY(30px);transition:opacity 1s,transform 1s cubic-bezier(.2,.8,.2,1)">
+  <div style="font:500 11px/1 Archivo;letter-spacing:.3em;color:#6B6A66">AS SEEN ON</div>
+  <div data-plat="1" style="display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(40px,7vw,110px);align-items:center;color:#0E0D0C;opacity:.8">
+    <span style="font:400 28px/1 'Archivo Black';letter-spacing:.02em">FOX</span>
+    <span style="font:900 30px/1 Archivo;letter-spacing:-.02em">hulu</span>
+    <span style="font:700 28px/1 Archivo;letter-spacing:-.02em">Disney+</span>
+    <span style="font:400 28px/1 'Archivo Black';letter-spacing:.04em">TMZ</span>
+  </div>
+</div>
+
+<div data-plat="1" style="position:relative;z-index:1;border-top:1px solid rgba(5,5,5,.12);padding:28px clamp(20px,4vw,56px);display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:center;font:500 11px/1 Archivo;letter-spacing:.2em;color:#5A5956">
+  <span>© 2026 MOIRE MEDIA</span>
+  <a href="mailto:hello@moiremedia.co">HELLO@MOIREMEDIA.CO</a>
+  <span>LOS ANGELES</span>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;grainAmount&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0,&quot;max&quot;:2,&quot;step&quot;:0.1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Optical field&quot;},&quot;moireIntensity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0,&quot;max&quot;:2,&quot;step&quot;:0.1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Optical field&quot;},&quot;cursorFollow&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Optical field&quot;},&quot;stickFigure&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Easter egg&quot;}}">
+const FRAG = `
+precision highp float;
+uniform vec2 uRes; uniform float uTime; uniform vec2 uMouse; uniform vec2 uVel; uniform float uForce; uniform float uScroll; uniform float uGrain; uniform float uMoire;
+float hash(vec2 p){ vec3 p3=fract(vec3(p.xyx)*.1031); p3+=dot(p3,p3.yzx+33.33); return fract((p3.x+p3.y)*p3.z); }
+float noise(vec2 p){ vec2 i=floor(p),f=fract(p); f=f*f*(3.-2.*f);
+  return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y); }
+float fbm(vec2 p){ float v=0.,a=.5; mat2 m=mat2(1.6,1.2,-1.2,1.6); for(int i=0;i<4;i++){ v+=a*noise(p); p=m*p; a*=.5; } return v; }
+vec3 field(vec2 p, float t, float act, out float dist){
+  vec2 q=vec2(fbm(p+t*.025), fbm(p+vec2(5.2,1.3)-t*.02));
+  vec2 r=vec2(fbm(p+2.6*q+vec2(1.7,9.2)+t*.04), fbm(p+2.6*q+vec2(8.3,2.8)-t*.03));
+  float f=fbm(p+2.2*r);
+  dist=length(r-.5)+abs(f-.5);
+  vec3 white=vec3(.965,.958,.945), cyan=vec3(.74,.92,.94), blue=vec3(.78,.86,.97), lav=vec3(.83,.79,.96), viol=vec3(.78,.72,.92), pink=vec3(.97,.82,.88), peach=vec3(.98,.88,.80), yel=vec3(.97,.94,.78);
+  vec3 c=white;
+  c=mix(c,blue,smoothstep(.40,.62,f)*act);
+  c=mix(c,lav,smoothstep(.50,.78,r.x)*act);
+  c=mix(c,viol,smoothstep(.62,.9,r.x)*smoothstep(.5,.7,f)*act*.7);
+  c=mix(c,pink,smoothstep(.52,.80,r.y)*act*.9);
+  c=mix(c,cyan,smoothstep(.55,.85,q.x)*act*.85);
+  c=mix(c,peach,smoothstep(.62,.92,q.y)*act*.55);
+  c=mix(c,yel,smoothstep(.68,.95,f)*act*.35);
+  // fine interference: two line families with near frequencies -> moire beats, plus warped concentric ripples
+  float w=r.x*18.+q.y*12.;
+  float l1=sin((p.x*.55+p.y*.85)*260.+w), l2=sin((p.x*.60+p.y*.80)*268.-w*.7);
+  float rip=sin(length(p-vec2(.3+q.x*.4,.5+r.y*.3))*420.+f*30.);
+  float bands=(l1*l2*.6+rip*.4);
+  float bandAmt=uMoire*act*(.035+.05*smoothstep(.4,.8,f));
+  c*=1.+bands*bandAmt;
+  // soft light bloom in refracted regions
+  c+=vec3(.05,.045,.04)*smoothstep(.55,.9,f)*act;
+  return c;
+}
+void main(){
+  vec2 uv=gl_FragCoord.xy/uRes; float asp=uRes.x/uRes.y;
+  vec2 p=vec2(uv.x*asp,uv.y);
+  float t=uTime;
+  // scroll: field is one continuous sheet; hero calm zone scrolls away
+  p.y+=uScroll*.55;
+  vec2 center=vec2(.5*asp,.52+uScroll);
+  float dc=length((p-center)*vec2(1.,1.25));
+  float act=smoothstep(.18,.78,dc);
+  act=max(act,smoothstep(.0,1.6,uScroll)*.85);
+  // cursor lens: elastic displacement, pulls field toward cursor with lag
+  vec2 m=vec2(uMouse.x*asp,uMouse.y+uScroll*.55);
+  vec2 d=p-m; float rr=length(d);
+  float lens=exp(-rr*rr/(.11+uForce*.08));
+  vec2 disp=-d*lens*(.18+uForce*.35) + uVel*lens*.25;
+  p+=disp;
+  float distA; vec3 base=field(p,t,act,distA);
+  // photographic chromatic aberration: RGB sampled at slightly separated coords, strongest at distortion
+  float caAmt=(.0025+lens*.012+distA*.004)*act;
+  vec2 caDir=normalize(d+vec2(1e-4))*caAmt;
+  float d1,d2; vec3 cr=field(p+caDir,t,act,d1); vec3 cb=field(p-caDir,t,act,d2);
+  vec3 c=vec3(cr.r,base.g,cb.b);
+  // grain: heavy, non-uniform; rides with color, evolves in time, colored per channel
+  vec2 g=gl_FragCoord.xy; float tt=floor(t*18.);
+  float gA=hash(g+tt*7.13), gB=hash(g+tt*3.71+11.), gC=hash(g+tt*5.29+29.);
+  float colorAmt=1.-smoothstep(0.,.6,length(c-vec3(.96,.955,.945))*1.8);
+  float degrade=fbm(p*3.5+t*.05);
+  float amp=uGrain*(.04+.16*act*(1.-colorAmt*.6)+.22*act*smoothstep(.5,.8,degrade)+.06*lens);
+  c+=(vec3(gA,gB,gC)-.5)*amp;
+  c+=(gA-.5)*amp*.6;
+  // scan / sensor texture
+  c*=1.+.012*sin(g.y*3.14159*.5+t*2.)*act;
+  c*=1.+.006*sin(t*11.)+.004*(hash(vec2(tt,g.y*.02))-.5);
+  // edge vignette of light, keep whites warm
+  c=mix(c,vec3(.985,.98,.972),(1.-act)*.35);
+  gl_FragColor=vec4(clamp(c,0.,1.),1.);
+}`;
+const VERT='attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+
+class Component extends DCLogic {
+  constructor(p){ super(p);
+    ['glRef','curRef','spRef','r1','r2','r3','r4','r5','s1','s2'].forEach(k=>this[k]=React.createRef());
+    this.target={x:.5,y:.5}; this.cur={x:.5,y:.5}; this.vel={x:0,y:0}; this.force=0; this.raf=null; this.scrollCur=0;
+  }
+  componentDidMount(){
+    const ease='opacity 1.1s cubic-bezier(.2,.8,.2,1),transform 1.1s cubic-bezier(.2,.8,.2,1)';
+    [['r1',300],['r2',600],['r3',1050],['r4',1300],['r5',1550]].forEach(([k,t])=>setTimeout(()=>{const el=this[k].current;if(!el)return;const own=el.style.transition;el.style.transition=ease;el.style.opacity='1';el.style.transform='translateY(0)';setTimeout(()=>{el.style.transition=own;},1200);},t));
+    this.io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';this.io.unobserve(e.target);}}),{threshold:.15});
+    ['s1','s2'].forEach(k=>this[k].current&&this.io.observe(this[k].current));
+    this.onMove=e=>{
+      this.target={x:e.clientX/innerWidth,y:1-e.clientY/innerHeight};
+      this.mouseVP={x:e.clientX,y:e.clientY};
+      const c=this.curRef.current; if(!c) return;
+      c.style.left=e.clientX+'px'; c.style.top=e.clientY+'px'; c.style.opacity='1';
+      const hot=!!(e.target&&e.target.closest&&e.target.closest('a,button'));
+      if(hot!==this.hot){this.hot=hot;c.style.transform=hot?'scale(.3)':'scale(1)';}
+    };
+    this.onOut=()=>{const c=this.curRef.current;if(c)c.style.opacity='0';};
+    window.addEventListener('mousemove',this.onMove);
+    document.documentElement.addEventListener('mouseleave',this.onOut);
+    this.initGL();
+    this.initSprite();
+  }
+  initSprite(){
+    const cv=this.spRef.current; if(!cv) return;
+    import('./stickman.js').then(({Stickman})=>{
+      this.man=new Stickman({canvas:cv,root:cv.parentElement||document.body,spawnEl:this.r2.current,getMouse:()=>this.mouseVP||{x:innerWidth/2,y:innerHeight/2},
+        onHit:(dx,dy)=>{const c=this.curRef.current;if(!c)return;c.style.transition='margin .12s ease-out,transform .4s cubic-bezier(.2,.8,.2,1),opacity .3s';c.style.marginLeft=(-22+dx)+'px';c.style.marginTop=(-22+dy)+'px';setTimeout(()=>{c.style.marginLeft='-22px';c.style.marginTop='-22px';},130);}});
+      let last=performance.now();
+      const loop=(now)=>{const dt=Math.min((now-last)/1000,.05);last=now;if(this.props.stickFigure??true)this.man.step(dt);else this.man.ctx.clearRect(0,0,cv.width,cv.height);this.spRaf=requestAnimationFrame(loop);};
+      this.spRaf=requestAnimationFrame(loop);
+    }).catch(e=>console.error(e));
+  }
+  initGL(){
+    const cv=this.glRef.current; if(!cv) return;
+    const gl=cv.getContext('webgl',{antialias:false,alpha:false,premultipliedAlpha:false}); if(!gl) return; this.gl=gl;
+    const sh=(t,s)=>{const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))console.error(gl.getShaderInfoLog(o));return o;};
+    const pr=gl.createProgram(); gl.attachShader(pr,sh(gl.VERTEX_SHADER,VERT)); gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FRAG)); gl.linkProgram(pr); gl.useProgram(pr);
+    const buf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,buf); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    const a=gl.getAttribLocation(pr,'a'); gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a,2,gl.FLOAT,false,0,0);
+    this.u={}; ['uRes','uTime','uMouse','uVel','uForce','uScroll','uGrain','uMoire'].forEach(n=>this.u[n]=gl.getUniformLocation(pr,n));
+    const resize=()=>{const dpr=Math.min(devicePixelRatio||1,1.25);cv.width=innerWidth*dpr;cv.height=innerHeight*dpr;gl.viewport(0,0,cv.width,cv.height);};
+    resize(); this.onResize=resize; window.addEventListener('resize',resize);
+    const t0=performance.now();
+    const tick=()=>{
+      const c=this.cur,t=this.target,follow=this.props.cursorFollow??true;
+      const px=c.x,py=c.y;
+      c.x+=(t.x-c.x)*.045; c.y+=(t.y-c.y)*.045;
+      const vx=c.x-px,vy=c.y-py;
+      this.vel.x+=(vx*14-this.vel.x)*.08; this.vel.y+=(vy*14-this.vel.y)*.08;
+      const sp=Math.hypot(vx,vy)*60; this.force+=(Math.min(sp,1.2)-this.force)*(sp>this.force?.12:.03);
+      const sc=(window.scrollY||0)/innerHeight; this.scrollCur+=(sc-this.scrollCur)*.08;
+      gl.uniform2f(this.u.uRes,cv.width,cv.height);
+      gl.uniform1f(this.u.uTime,(performance.now()-t0)/1000);
+      gl.uniform2f(this.u.uMouse,follow?c.x:-5,follow?c.y:-5);
+      gl.uniform2f(this.u.uVel,follow?this.vel.x:0,follow?this.vel.y:0);
+      gl.uniform1f(this.u.uForce,follow?this.force:0);
+      gl.uniform1f(this.u.uScroll,this.scrollCur);
+      gl.uniform1f(this.u.uGrain,this.props.grainAmount??1);
+      gl.uniform1f(this.u.uMoire,this.props.moireIntensity??1);
+      gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+      this.raf=requestAnimationFrame(tick);
+    };
+    this.raf=requestAnimationFrame(tick);
+  }
+  componentWillUnmount(){ cancelAnimationFrame(this.raf); cancelAnimationFrame(this.spRaf); this.man&&this.man.destroy(); this.onSpResize&&window.removeEventListener('resize',this.onSpResize); this.io&&this.io.disconnect(); window.removeEventListener('mousemove',this.onMove); document.documentElement.removeEventListener('mouseleave',this.onOut); this.onResize&&window.removeEventListener('resize',this.onResize); }
+  renderVals(){
+    const refs={}; ['glRef','curRef','spRef','r1','r2','r3','r4','r5','s1','s2'].forEach(k=>refs[k]=this[k]);
+    return refs;
+  }
+}
+</script>
+</body>
+</html>
